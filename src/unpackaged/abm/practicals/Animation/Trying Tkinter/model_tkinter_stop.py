@@ -56,7 +56,7 @@ maxEnv = len(environment)
 carry_on = True
 # Make the agents.
 for i in range(num_of_agents):
-    agents.append(agentframework.Agent(environment, maxEnv))
+    agents.append(agentframework.Agent(environment,agents, maxEnv))
 # Move the agents.
 def update(frame_number):
     fig.clear()
@@ -64,6 +64,7 @@ def update(frame_number):
     matplotlib.pyplot.xlim(0, maxEnv-1)
     matplotlib.pyplot.ylim(0, maxEnv-1)
     matplotlib.pyplot.imshow(environment)
+    matplotlib.pyplot.title("Iteration:" + str(frame_number) + "/" + str(num_of_iterations))
     for j in range(num_of_iterations):
         print(agents[0].x,agents[0].y)
         for i in range(num_of_agents):           

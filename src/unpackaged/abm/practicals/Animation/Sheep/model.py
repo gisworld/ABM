@@ -1,41 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Nov 20 13:25:05 2017
-
+Updated 16 Dec 2017
+10 sheep eat away at their environments 
+Greedy sheep are sick after 100 units
 @author: amandaf
 """
-import tkinter
-import matplotlib.backends.backend_tkagg
+
 import matplotlib.pyplot
 import matplotlib.animation
 import csv
 import agentframework
+import random
 
-matplotlib.use("TkAgg") 
-def distance_between(agent0, agent1):
-    return (((agent0.x - agent1.x)**2) + ((agent0.y - agent1.y)**2))**0.5
-
-def run():
-    animation = matplotlib.animation.FuncAnimation(fig, update, frames=num_of_iterations, repeat=False)
-    canvas.show()
-   
+#setup variables
 num_of_agents = 10
 num_of_iterations = 100
 agents = []
-fig = matplotlib.pyplot.figure(figsize=(7, 7))
-#ax = fig.add_axes([0, 0, 1, 1])
-
-
-root = tkinter.Tk() 
-root.wm_title("Model")
-canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
-canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
-
-menu_bar = tkinter.Menu(root)
-root.config(menu=menu_bar)
-model_menu = tkinter.Menu(menu_bar)
-menu_bar.add_cascade(label="Model", menu=model_menu)
-model_menu.add_command(label="Run model", command=run) 
+#Set to 7 x 6 in order to prevent Qwindowswindows::unable to set geometry
+fig = matplotlib.pyplot.figure(figsize=(7, 6))
+ax = fig.add_axes([0, 0, 1, 1])
 #Empty environmental list
 environment = []
 #Read the file
@@ -52,18 +35,21 @@ for row in reader:	# A list of rows
 f.close() 
 #Calculate size of environment
 maxEnv = len(environment)
-
 # Make the agents.
 for i in range(num_of_agents):
-    agents.append(agentframework.Agent(environment, maxEnv))
+    agents.append(agentframework.Agent(environment, agents, maxEnv))
 # Move the agents.
 def update(frame_number):
     fig.clear()
+    #setup figure limits so it stops resizing
     matplotlib.pyplot.xlim(0, maxEnv-1)
     matplotlib.pyplot.ylim(0, maxEnv-1)
     matplotlib.pyplot.imshow(environment)
+    matplotlib.pyplot.title("Iteration:" + str(frame_number) + "/" + str(num_of_iterations))
+    #randomise order
+    random.shuffle(agents)
     for j in range(num_of_iterations):
-        print(agents[0].x,agents[0].y)
+        #print(agents[0].x,agents[0].y)
         for i in range(num_of_agents):           
             agents[i].move()
             #Agent eats values
@@ -73,9 +59,14 @@ def update(frame_number):
                 #Greedy agents are sick if they eat more than 100 units
                 agents[i].sick()
                 #print ("Being sick")
-
     for i in range(num_of_agents):
         matplotlib.pyplot.scatter(agents[i].x,agents[i].y)
+
+#Display animation
+animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat = False, frames=num_of_iterations)
+matplotlib.pyplot.show()
+
+
 #Write out environment to file
 f2 = open('environment.txt','w', newline='')
 writer = csv.writer(f2)
@@ -85,17 +76,6 @@ f2.close()
 #Write store count to file
 f2 = open('store.txt','a')
 for i in range(num_of_agents):
+    print (agents[i].store)
     f2.write(str(agents[i].store)+"\n")
 f2.close()
-
-
-#for i in range(num_of_agents):
-#    matplotlib.pyplot.scatter(agents[i].x,agents[i].y)
-#matplotlib.pyplot.show()
-#animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat = False, frames=num_of_iterations)
-tkinter.mainloop()
-#matplotlib.pyplot.show()
-
-for agent0 in agents:
-    for agent1 in agents:
-        distance = distance_between(agent0, agent1)

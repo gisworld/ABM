@@ -12,6 +12,7 @@ import matplotlib.animation
 import csv
 import agentframework
 import wolfframework
+import random
 
 #set up variables 
 num_of_agents = 10
@@ -22,7 +23,8 @@ agents = []
 deadsheep=[]
 neighbourhood = 10
 #Set up figure
-fig = matplotlib.pyplot.figure(figsize=(7, 7))
+#Set to 7 x 6 in order to prevent Qwindowswindows::unable to set geometry
+fig = matplotlib.pyplot.figure(figsize=(7, 6))
 ax = fig.add_axes([0, 0, 1, 1])
 #Empty environmental list
 environment = []
@@ -52,9 +54,13 @@ for i in range(num_of_wolves):
 def update(frame_number):
     fig.clear()
     global carry_on
+    #setup figure limits so it stops resizing
     matplotlib.pyplot.xlim(0, maxEnv-1)
     matplotlib.pyplot.ylim(0, maxEnv-1)
     matplotlib.pyplot.imshow(environment)
+    matplotlib.pyplot.title("Iteration:" + str(frame_number) + "/" + str(num_of_iterations))
+    #randomise order
+    random.shuffle(agents)
     for j in range(num_of_iterations):
         for i in range(len(agents)):           
             agents[i].move()
@@ -76,6 +82,7 @@ def update(frame_number):
     else:
         carry_on =False
         print ("All the sheep have been eaten")
+        matplotlib.pyplot.title("Model finished! All sheep have been eaten")
     
     #display sheep
     for i in range(len(agents)):
@@ -87,6 +94,8 @@ def update(frame_number):
     if len(deadsheep) != 0:
         for i in range(len(deadsheep)):
              matplotlib.pyplot.scatter(deadsheep[i].x,deadsheep[i].y, color='red', marker='X')
+    
+
 
 def gen_function(b = [0]):
     a = 0
