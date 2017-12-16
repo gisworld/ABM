@@ -4,38 +4,20 @@ Created on Mon Nov 20 13:25:05 2017
 
 @author: amandaf
 """
-import matplotlib.backends.backend_tkagg
+
 import matplotlib.pyplot
 import matplotlib.animation
-
-import tkinter
 import csv
 import agentframework
-matplotlib.use("TkAgg") 
+
 def distance_between(agent0, agent1):
     return (((agent0.x - agent1.x)**2) + ((agent0.y - agent1.y)**2))**0.5
-
-def run():
-    animation = matplotlib.animation.FuncAnimation(fig, update, frames=num_of_iterations, repeat=False)
-    canvas.show()
-   
+    
 num_of_agents = 10
 num_of_iterations = 100
 agents = []
 fig = matplotlib.pyplot.figure(figsize=(7, 7))
-#ax = fig.add_axes([0, 0, 1, 1])
-
-
-root = tkinter.Tk() 
-root.wm_title("Model")
-canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
-canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
-
-menu_bar = tkinter.Menu(root)
-root.config(menu=menu_bar)
-model_menu = tkinter.Menu(menu_bar)
-menu_bar.add_cascade(label="Model", menu=model_menu)
-model_menu.add_command(label="Run model", command=run) 
+ax = fig.add_axes([0, 0, 1, 1])
 #Empty environmental list
 environment = []
 #Read the file
@@ -57,7 +39,7 @@ for i in range(num_of_agents):
     agents.append(agentframework.Agent(environment, maxEnv))
 # Move the agents.
 def update(frame_number):
-    #fig.clear()
+    fig.clear()
     matplotlib.pyplot.xlim(0, maxEnv-1)
     matplotlib.pyplot.ylim(0, maxEnv-1)
     matplotlib.pyplot.imshow(environment)
@@ -89,10 +71,9 @@ f2.close()
 
 #for i in range(num_of_agents):
 #    matplotlib.pyplot.scatter(agents[i].x,agents[i].y)
-#matplotlib.pyplot.show()
-#animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat = False, frames=num_of_iterations)
-tkinter.mainloop()
-#matplotlib.pyplot.show()
+
+animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat = False, frames=num_of_iterations)
+matplotlib.pyplot.show()
 
 for agent0 in agents:
     for agent1 in agents:

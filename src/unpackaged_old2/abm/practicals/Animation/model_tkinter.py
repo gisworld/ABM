@@ -4,10 +4,8 @@ Created on Mon Nov 20 13:25:05 2017
 
 @author: amandaf
 """
-import matplotlib.backends.backend_tkagg
-import matplotlib.pyplot
-import matplotlib.animation
 
+import matplotlib
 import tkinter
 import csv
 import agentframework
