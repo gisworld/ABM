@@ -43,6 +43,7 @@ class Agent():
     def __str__ (self):
         return "Agent X,Y: " +str(self.get_x()) + ", "+str(self.get_y()) + ". Store:" + str(self.store)
 
+    #Move the sheep around 1 step at a time
     def move(self):
         if random.random() < 0.5:
             self.set_x((self._x + 1) % self.maxE)
@@ -63,7 +64,8 @@ class Agent():
 #            self.y = (self.y + 1) % self.maxE
 #        else:
 #            self.y = (self.y - 1) % self.maxE      
-
+    
+    #Eat 10 units of grass
     def eat(self):
         if self.environment[self.get_y()][self.get_x()] > 10:
             self.environment[self.get_y()][self.get_x()] -= 10
@@ -76,7 +78,8 @@ class Agent():
 #            self.store += 10
 #        else:
 #            self.environment[self.y][self.x] = 0
-        
+    
+    #Greedy sheep will be sick if they exceed the defined amount      
     def sick(self):
         self.environment[self.get_y()][self.get_x()] += self.store
         self.store = 0 

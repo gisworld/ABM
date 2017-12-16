@@ -4,14 +4,14 @@ Created on Mon Nov 20 12:10:18 2017
 
 @author: amandaf
 """
-#This doesn't work 
+
 import random
 class Agent():
     def __init__ (self):
         self.x = random.randint(0,99)
         self.y = random.randint(0,99)
     
-   
+   #Move the sheep around 1 step at a time
     def move(self):
         if random.random() < 0.5:
             self.x = (self.x + 1) % 100

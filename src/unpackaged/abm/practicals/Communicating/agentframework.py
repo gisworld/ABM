@@ -4,7 +4,7 @@ Created on Mon Nov 20 12:10:18 2017
 
 @author: amandaf
 """
-#This doesn't work 
+
 import random
 class Agent():
     def __init__ (self, environment,agents, maxE):
@@ -42,7 +42,8 @@ class Agent():
     # Display positional information about Agent
     def __str__ (self):
         return "Agent X,Y: " +str(self.get_x()) + ", "+str(self.get_y()) + ". Store:" + str(self.store)
-
+    
+    #Move the sheep around 1 step at a time
     def move(self):
         if random.random() < 0.5:
             self.set_x((self._x + 1) % self.maxE)
@@ -53,20 +54,22 @@ class Agent():
             self.set_y((self._y + 1) % self.maxE)
         else:
             self.set_y((self._y - 1) % self.maxE)  
-
+            
+    #Eat 10 grass units
     def eat(self):
         if self.environment[self.get_y()][self.get_x()] > 10:
             self.environment[self.get_y()][self.get_x()] -= 10
             self.store += 10
         else:
             self.environment[self.get_y()][self.get_x()] = 0
-        
+    
+    #Greedy sheep are sick after x units    
     def sick(self):
         self.environment[self.get_y()][self.get_x()] += self.store
         self.store = 0 
-        
+    
+    #Share with nearby neighbours
     def share_with_neighbours(self, neighbourhood):
-        #print (neighbourhood)
         # Loop through the agents in self.agents .
         for agent in self.agents:
             # Calculate the distance between self and the current other agent:
@@ -79,9 +82,9 @@ class Agent():
                 average = sum/2
                 self.store = average
                 agent.store = average
-                print("sharing " + str(distance) + " " + str(average))
             # End if
         # End loop
-    
+        
+    #Calculate distance between agents
     def distance_between(self, agent):
         return (((self.get_x() - agent.x)**2) + ((self.get_y() - agent.y)**2))**0.5
