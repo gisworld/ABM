@@ -1,6 +1,0 @@
-Download the zipped file.
-Unzip into chosen location
-Open command window at file location
-run command: python model.py
-A seperate window will open displaying the environment with the animated model.
-Close graph for text files to write
